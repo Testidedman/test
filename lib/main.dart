@@ -5,6 +5,7 @@ import 'package:test_app/services/firebase_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseService.init();
+  FirebaseService.getVersions();
   await AppmetricaService.initialization();
   runApp(const MyApp());
 }
