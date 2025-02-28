@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/features/update_page/update_page.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: UpdateAvailablePage(),
     );
   }
 }
