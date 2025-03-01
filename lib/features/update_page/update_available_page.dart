@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/constants/image_constants.dart';
 import 'package:test_app/core/widgets/custom_button.dart';
@@ -87,7 +86,7 @@ class UpdateAvailablePage extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     CustomButton(
-                      text: 'Обноваить позже',
+                      text: 'Обновить позже',
                       colorButton: Color(0xff293038),
                       colorText: Colors.white,
                       onTap: () {},
