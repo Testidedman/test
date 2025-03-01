@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/features/update_page/update_available_page.dart';
 import 'package:test_app/models/version_model.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
