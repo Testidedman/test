@@ -27,10 +27,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider(
-  create: (context) => TechnicalWorkBloc(),
-  child: TechnicalWorkPage(),
-)
+      home: switch (appStatus) {
+        AppStatus.technicalWorks => BlocProvider(
+          create: (context) => TechnicalWorkBloc(),
+          child: TechnicalWorkPage(),
+        ),
+        AppStatus.updateAvailable => const MyHomePage(title: 'Flutter Demo Home Page1'),
+        AppStatus.needUpdate => const MyHomePage(title: 'Flutter Demo Home Page2'),
+        AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
+      },
     );
   }
 }
