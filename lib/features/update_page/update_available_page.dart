@@ -15,7 +15,6 @@ class UpdateAvailablePage extends StatelessWidget {
         body: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 ImageConstants.updateImage,

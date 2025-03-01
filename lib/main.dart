@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
+import 'package:test_app/features/technical_work/technical_work_page.dart';
 import 'package:test_app/models/version_model.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
@@ -24,12 +27,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: switch (appStatus) {
-        AppStatus.technicalWorks => const MyHomePage(title: 'Flutter Demo Home Page'),
-        AppStatus.updateAvailable => const MyHomePage(title: 'Flutter Demo Home Page1'),
-        AppStatus.needUpdate => const MyHomePage(title: 'Flutter Demo Home Page2'),
-        AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
-      },
+      home: BlocProvider(
+  create: (context) => TechnicalWorkBloc(),
+  child: TechnicalWorkPage(),
+)
     );
   }
 }
