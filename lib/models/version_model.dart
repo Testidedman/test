@@ -39,7 +39,7 @@ class VersionModel {
   }
 
   static List<VersionModel> listFromJson(Map<String, dynamic> json) {
-    List<VersionModel> versions = [];
+    final List<VersionModel> versions = [];
     for (var version in json['payload']) {
       versions.add(VersionModel.fromJson(version));
     }
