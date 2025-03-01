@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/models/version_model.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseService.init();
-  FirebaseService.getVersions();
+  final appStatus = await FirebaseService.getAppStatus();
   await AppmetricaService.initialization();
-  runApp(const MyApp());
+  runApp(MyApp(appStatus: appStatus));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.appStatus});
 
+  final AppStatus appStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: switch (appStatus) {
+        AppStatus.technicalWorks => const MyHomePage(title: 'Flutter Demo Home Page'),
+        AppStatus.updateAvailable => const MyHomePage(title: 'Flutter Demo Home Page1'),
+        AppStatus.needUpdate => const MyHomePage(title: 'Flutter Demo Home Page2'),
+        AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
+      },
     );
   }
 }
