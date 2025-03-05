@@ -51,4 +51,10 @@ class RuStoreRemoteConfigService implements RemoteConfigService {
       rethrow;
     }
   }
+
+  @override
+  Future<String> getMarketPlaceURL(String marketPlace) {
+    // TODO: implement gerMarketPlaceURL
+    throw UnimplementedError();
+  }
 }
