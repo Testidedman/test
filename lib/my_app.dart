@@ -5,11 +5,13 @@ import 'package:test_app/features/technical_work/technical_work_page.dart';
 import 'package:test_app/models/version_model.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
+import 'package:test_app/services/remote_config_service/remote_config_service.dart';
 
-void main() async {
+void initApp(RemoteConfigService configService) async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseService.init();
-  final appStatus = await FirebaseService.getAppStatus();
+  await configService.init();
+  final appStatus = await configService.getAppStatus();
   await AppmetricaService.initialization();
   runApp(MyApp(appStatus: appStatus));
 }
