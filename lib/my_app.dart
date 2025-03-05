@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
 import 'package:test_app/features/technical_work/technical_work_page.dart';
+import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
+import 'package:test_app/features/update_available_page/update_available_page.dart';
 import 'package:test_app/models/version_model.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
@@ -13,13 +15,18 @@ void initApp(RemoteConfigService configService) async {
   await configService.init();
   final appStatus = await configService.getAppStatus();
   await AppmetricaService.initialization();
-  runApp(MyApp(appStatus: appStatus));
+  runApp(MyApp(
+    appStatus: appStatus,
+    configService: configService,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.appStatus});
+  const MyApp({
+    super.key, required this.appStatus, required this.configService});
 
   final AppStatus appStatus;
+  final RemoteConfigService configService;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,12 @@ class MyApp extends StatelessWidget {
           create: (context) => TechnicalWorkBloc(),
           child: TechnicalWorkPage(),
         ),
-        AppStatus.updateAvailable => const MyHomePage(title: 'Flutter Demo Home Page1'),
+        AppStatus.updateAvailable => BlocProvider(
+          create: (context) => UpdateAvailablePageBloc(
+            configService: configService,
+          ),
+          child: UpdateAvailablePage(),
+        ),
         AppStatus.needUpdate => const MyHomePage(title: 'Flutter Demo Home Page2'),
         AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
       },

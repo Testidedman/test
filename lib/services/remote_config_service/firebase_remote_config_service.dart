@@ -45,4 +45,16 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
       rethrow;
     }
   }
+
+  @override
+  Future<String> getMarketPlaceURL(String marketPlace) async {
+    try {
+      final remoteConfig = FirebaseRemoteConfig.instance;
+      final String urls = remoteConfig.getString('marketplace_urls');
+      return jsonDecode(urls)[marketPlace];
+    }
+    catch (_) {
+      rethrow;
+    }
+  }
 }
