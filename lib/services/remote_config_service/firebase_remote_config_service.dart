@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/constants/remote_config_constants.dart';
+import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/models/version_model.dart';
 import 'package:test_app/core/utils/app_config.dart';
@@ -45,32 +46,62 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
   /// Получение json из remote конфига по ключу и конвертирование его в List моделей
   /* Пример json из параметра маркетплейса
   {
-    "what's_new": [
-      {
-        "text": "Фикс багов",
-        "is_fix": true,
-      },
-      {
-        "text": "Добавление раздела "Избранное"",
-        "is_fix": false,
-      }
-    ],
     "versions": [
       {
         "version": "1.0.3",
-        "app_status": "technical_work"
+        "app_status": "technical_work",
+        "features": [
+          {
+            "text": "Фикс багов",
+            "is_fix": true,
+          },
+          {
+            "text": "Добавление раздела "Избранное"",
+            "is_fix": false,
+          }
+        ],
       },
       {
         "version": "1.0.2",
-        "app_status": "none"
+        "app_status": "none",
+        "features": [
+          {
+            "text": "Фикс багов",
+            "is_fix": true,
+          },
+          {
+            "text": "Добавление раздела "Избранное"",
+            "is_fix": false,
+          }
+        ],
       },
       {
         "version": "1.0.1",
-        "app_status": "update_available"
+        "app_status": "update_available",
+        "features": [
+          {
+            "text": "Фикс багов",
+            "is_fix": true,
+          },
+          {
+            "text": "Добавление раздела "Избранное"",
+            "is_fix": false,
+          }
+        ],
       },
       {
         "version": "1.0.0",
-        "app_status": "need_update"
+        "app_status": "need_update",
+        "features": [
+          {
+            "text": "Фикс багов",
+            "is_fix": true,
+          },
+          {
+            "text": "Добавление раздела "Избранное"",
+            "is_fix": false,
+          }
+        ],
       }
     ]
   }

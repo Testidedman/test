@@ -3,6 +3,7 @@ import 'package:flutter_rustore_remoteconfig/rustore_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/constants/key_constants.dart';
 import 'package:test_app/constants/remote_config_constants.dart';
+import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/models/version_model.dart';
 import 'package:test_app/core/utils/app_config.dart';

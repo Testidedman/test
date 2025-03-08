@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
 import 'package:test_app/features/technical_work/technical_work_page.dart';
 import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
 import 'package:test_app/features/update_available_page/update_available_page.dart';
-import 'package:test_app/models/version_model.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
 import 'package:test_app/services/remote_config_service/firebase_remote_config_service.dart';
+import 'package:test_app/services/remote_config_service/remote_config_service.dart';
 
 void main() {
   initApp(
@@ -24,11 +25,10 @@ void main() {
 void initApp(AppConfig appConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseService.init();
-  final getIt = GetIt.instance;
-  getIt.registerSingleton<AppConfig>(appConfig);
-  final remoteConfigService = appConfig.remoteConfigService;
+  GetIt.instance.registerSingleton<AppConfig>(appConfig);
+  final RemoteConfigService remoteConfigService = appConfig.remoteConfigService;
   await remoteConfigService.init();
-  final appStatus = await remoteConfigService.getAppStatus();
+  final AppStatus appStatus = await remoteConfigService.getAppStatus();
   await AppmetricaService.init();
   runApp(MyApp(appStatus: appStatus));
 }

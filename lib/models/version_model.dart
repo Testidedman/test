@@ -1,11 +1,5 @@
 import 'package:test_app/constants/version_constants.dart';
-
-enum AppStatus {
-  technicalWorks,
-  updateAvailable,
-  needUpdate,
-  none
-}
+import 'package:test_app/enums/app_status.dart';
 
 class VersionModel {
   final String version;
