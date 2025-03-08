@@ -1,4 +1,4 @@
-enum RemoteConfigs {
+enum RemoteConfig {
   firebase,
   ruStore
 }

@@ -1,32 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
 import 'package:test_app/features/technical_work/technical_work_page.dart';
 import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
 import 'package:test_app/features/update_available_page/update_available_page.dart';
 import 'package:test_app/models/version_model.dart';
+import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/services/appmetrica_service.dart';
 import 'package:test_app/services/firebase_service.dart';
-import 'package:test_app/services/remote_config_service/remote_config_service.dart';
+import 'package:test_app/services/remote_config_service/firebase_remote_config_service.dart';
 
-void initApp(RemoteConfigService configService) async {
+void main() {
+  initApp(
+    AppConfig(
+        remoteConfigService: FirebaseRemoteConfigService(),
+        marketplace: Marketplace.googlePlay,
+    )
+  );
+}
+
+void initApp(AppConfig appConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseService.init();
-  await configService.init();
-  final appStatus = await configService.getAppStatus();
-  await AppmetricaService.initialization();
-  runApp(MyApp(
-    appStatus: appStatus,
-    configService: configService,
-  ));
+  final getIt = GetIt.instance;
+  getIt.registerSingleton<AppConfig>(appConfig);
+  final remoteConfigService = appConfig.remoteConfigService;
+  await remoteConfigService.init();
+  final appStatus = await remoteConfigService.getAppStatus();
+  await AppmetricaService.init();
+  runApp(MyApp(appStatus: appStatus));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({
-    super.key, required this.appStatus, required this.configService});
+    super.key,
+    required this.appStatus,
+  });
 
   final AppStatus appStatus;
-  final RemoteConfigService configService;
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +51,17 @@ class MyApp extends StatelessWidget {
       ),
       home: switch (appStatus) {
         AppStatus.technicalWorks => BlocProvider(
-          create: (context) => TechnicalWorkBloc(),
-          child: TechnicalWorkPage(),
-        ),
-        AppStatus.updateAvailable => BlocProvider(
-          create: (context) => UpdateAvailablePageBloc(
-            configService: configService,
+            create: (context) => TechnicalWorkBloc(),
+            child: TechnicalWorkPage(),
           ),
-          child: UpdateAvailablePage(),
-        ),
-        AppStatus.needUpdate => const MyHomePage(title: 'Flutter Demo Home Page2'),
+        AppStatus.updateAvailable => BlocProvider(
+            create: (context) => UpdateAvailablePageBloc(
+              configService: GetIt.instance<AppConfig>().remoteConfigService,
+            ),
+            child: UpdateAvailablePage(),
+          ),
+        AppStatus.needUpdate =>
+          const MyHomePage(title: 'Flutter Demo Home Page2'),
         AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
       },
     );
