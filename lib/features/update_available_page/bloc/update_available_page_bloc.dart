@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:test_app/core/models/feature_model.dart';
+import 'package:test_app/core/models/version_model.dart';
 import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,9 +15,21 @@ class UpdateAvailablePageBloc extends Bloc<UpdateAvailablePageEvent, UpdateAvail
   }): _configService = configService,
         super(UpdateAvailablePageState()) {
     on<UpdateAvailablePageEventTapMarketPlace>(_tapMarketPlace);
+    on<UpdateAvailablePageEventInit>(_init);
   }
 
+
   final RemoteConfigService _configService;
+
+  Future<void> _init(
+      UpdateAvailablePageEventInit event,
+      Emitter<UpdateAvailablePageState> emit
+      ) async {
+    final getIt = GetIt.instance;
+    final String version = getIt<VersionModel>().version;
+    final List<FeatureModel> features = getIt<VersionModel>().features;
+    emit(state.copyWith(version: version, features: features));
+  }
 
   Future<void> _tapMarketPlace(
       UpdateAvailablePageEventTapMarketPlace event,

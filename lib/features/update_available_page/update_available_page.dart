@@ -26,80 +26,91 @@ class UpdateAvailablePage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 16, right: 16, top: 20, bottom: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Доступно обновление',
-                      style: GoogleFonts.beVietnamPro(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                          color: Colors.white
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Вышла обновленная версия приложения. Пожалуйста, '
-                          'обновите его до последней версии, чтобы получить максимальную пользу.',
-                      style: GoogleFonts.beVietnamPro(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                          color: Colors.white
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    CustomTile(
-                        image: ImageConstants.arrow,
-                        title: 'Что нового?',
-                        description: 'Версия 1.0.1'
-                    ),
-                    SizedBox(height: 24),
-                    CustomTile(
-                        image: ImageConstants.arrow,
-                        title: 'Добавить поддержку для IOS',
-                        description: 'Версия 1.0.1'
-                    ),
-                    SizedBox(height: 24),
-                    CustomTile(
-                        image: ImageConstants.arrow,
-                        title: 'Добавить поддержку для IOS',
-                        description: 'Версия 1.0.1'
-                    ),
-                    SizedBox(height: 24),
-                    CustomTile(
-                        image: ImageConstants.arrow,
-                        title: 'Добавить поддержку для IOS',
-                        description: 'Версия 1.0.1'
-                    ),
-                    SizedBox(height: 24),
-                    CustomButton(
-                      text: 'Обновить сейчас',
-                      colorButton: Color(0xff1A80E5),
-                      colorText: Colors.white,
-                      onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              return BlocProvider(
-                                create: (context) => UpdateAvailablePageBloc(
-                                    configService: FirebaseRemoteConfigService()
+                    left: 16,
+                    right: 16,
+                    top: 20,
+                    bottom: 12
+                ),
+                child: BlocBuilder<UpdateAvailablePageBloc, UpdateAvailablePageState>(
+                  buildWhen: (current, previous) {
+                    return current.version != previous.version;
+                  },
+                  builder: (context, state) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Доступно обновление',
+                          style: GoogleFonts.beVietnamPro(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: Colors.white
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Вышла обновленная версия приложения. Пожалуйста, '
+                              'обновите его до последней версии, чтобы получить максимальную пользу.',
+                          style: GoogleFonts.beVietnamPro(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 16,
+                              color: Colors.white
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        CustomTile(
+                            image: ImageConstants.arrow,
+                            title: 'Что нового?',
+                            description: state.version
+                        ),
+                        SizedBox(height: 12),
+                        ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: state.features.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: 12),
+                                child: CustomTile(
+                                    image: ImageConstants.arrow,
+                                    title: state.features[index].text,
+                                    description: state.features[index].isFixed
+                                        ? 'fixed'
+                                        : 'is not fixed'
                                 ),
-                                child: AvailableStoresSheet(),
                               );
                             }
-                        );
-                      },
-                    ),
-                    SizedBox(height: 12),
-                    CustomButton(
-                      text: 'Обновить позже',
-                      colorButton: Color(0xff293038),
-                      colorText: Colors.white,
-                      onTap: () {},
-                    )
-                  ],
+                        ),
+                        SizedBox(height: 12),
+                        CustomButton(
+                          text: 'Обновить сейчас',
+                          colorButton: Color(0xff1A80E5),
+                          colorText: Colors.white,
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return BlocProvider(
+                                    create: (context) =>
+                                        UpdateAvailablePageBloc(
+                                            configService: FirebaseRemoteConfigService()
+                                        ),
+                                    child: AvailableStoresSheet(),
+                                  );
+                                }
+                            );
+                          },
+                        ),
+                        SizedBox(height: 12),
+                        CustomButton(
+                          text: 'Обновить позже',
+                          colorButton: Color(0xff293038),
+                          colorText: Colors.white,
+                          onTap: () {},
+                        )
+                      ],
+                    );
+                  },
                 ),
               )
             ],

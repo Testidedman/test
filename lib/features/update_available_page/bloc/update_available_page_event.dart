@@ -9,3 +9,5 @@ class UpdateAvailablePageEventTapMarketPlace extends UpdateAvailablePageEvent {
     required this.marketPlace
   });
 }
+
+class UpdateAvailablePageEventInit extends UpdateAvailablePageEvent {}
