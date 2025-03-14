@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/constants/image_constants.dart';
+import 'package:test_app/core/constants/image_constants.dart';
+import 'package:test_app/core/services/flushbar_service.dart';
 import 'package:test_app/core/widgets/custom_tile.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
-import 'package:test_app/services/flushbar_service.dart';
 
 class AvailableStoresSheet extends StatelessWidget {
   const AvailableStoresSheet({super.key});

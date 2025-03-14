@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test_app/constants/image_constants.dart';
+import 'package:test_app/core/constants/image_constants.dart';
 import 'package:test_app/core/widgets/custom_button.dart';
 import 'package:test_app/core/widgets/custom_tile.dart';
 import 'package:test_app/features/update_available_page/available_stores_sheet.dart';
 import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
-import 'package:test_app/services/remote_config_service/firebase_remote_config_service.dart';
+import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
 
 class UpdateAvailablePage extends StatelessWidget {
   const UpdateAvailablePage({super.key});

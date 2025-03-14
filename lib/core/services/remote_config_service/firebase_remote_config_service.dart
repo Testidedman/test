@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
-import 'package:test_app/constants/remote_config_constants.dart';
+import 'package:test_app/core/constants/remote_config_constants.dart';
+import 'package:test_app/core/services/common_service.dart';
+import 'package:test_app/core/services/network_service/network_config.dart';
+import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
-import 'package:test_app/models/version_model.dart';
+import 'package:test_app/core/models/version_model.dart';
 import 'package:test_app/core/utils/app_config.dart';
-import 'package:test_app/services/common_service.dart';
-import 'package:test_app/services/remote_config_service/remote_config_service.dart';
 
 class FirebaseRemoteConfigService implements RemoteConfigService {
   @override
@@ -19,9 +20,21 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
         minimumFetchInterval: const Duration(hours: 1),
       ));
       await remoteConfig.fetchAndActivate();
+      await _getCurrentVersionModel();
+      await _getBaseURL();
     } catch (_) {
       rethrow;
     }
+  }
+
+  Future<void> _getCurrentVersionModel() async {
+    final List<VersionModel> versionModels = _getVersions();
+    final String currentVersion = await CommonService.getCurrentVersion();
+    final VersionModel currentVersionModel = versionModels.firstWhere(
+          (versionModel) => currentVersion == versionModel.version,
+    );
+    final getIt = GetIt.instance;
+    getIt.registerSingleton<VersionModel>(currentVersionModel);
   }
 
   /// Получение List моделей версий из remote конфига, а также номера нашей версии
@@ -30,11 +43,8 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
   @override
   Future<AppStatus> getAppStatus() async {
     try {
-      final List<VersionModel> versionModels = _getVersions();
-      final String currentVersion = await CommonService.getCurrentVersion();
-      final VersionModel currentVersionModel = versionModels.firstWhere(
-        (versionModel) => currentVersion == versionModel.version,
-      );
+      final getIt = GetIt.instance;
+      final currentVersionModel = getIt<VersionModel>();
       return currentVersionModel.appStatus;
     } catch (_) {
       return AppStatus.technicalWorks;
@@ -132,5 +142,16 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
     } catch (_) {
       rethrow;
     }
+  }
+
+  Future<void> _getBaseURL() async {
+    final getIt = GetIt.instance;
+    final currentVersionModel = getIt<VersionModel>();
+    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    final String url = remoteConfig.getString(currentVersionModel.isProd
+        ? RemoteConfigConstants.prodBaseURL
+        : RemoteConfigConstants.devBaseURL
+    );
+    getIt.registerSingleton<NetworkConfig>(NetworkConfig(baseUrl: url));
   }
 }

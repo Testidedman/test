@@ -1,13 +1,15 @@
-import 'package:test_app/constants/version_constants.dart';
+import 'package:test_app/core/constants/version_constants.dart';
 import 'package:test_app/enums/app_status.dart';
 
 class VersionModel {
   final String version;
   final AppStatus appStatus;
+  final bool isProd;
 
   VersionModel({
     required this.version,
-    required this.appStatus
+    required this.appStatus,
+    required this.isProd,
   });
 
   factory VersionModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class VersionModel {
     return VersionModel(
       version: json['version'],
       appStatus: appStatus,
+      isProd: json['is_prod']
     );
   }
 
