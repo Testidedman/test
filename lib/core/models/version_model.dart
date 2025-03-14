@@ -1,15 +1,18 @@
 import 'package:test_app/core/constants/version_constants.dart';
+import 'package:test_app/core/models/feature_model.dart';
 import 'package:test_app/enums/app_status.dart';
 
 class VersionModel {
   final String version;
   final AppStatus appStatus;
   final bool isProd;
+  final List<FeatureModel> features;
 
   VersionModel({
     required this.version,
     required this.appStatus,
     required this.isProd,
+    required this.features
   });
 
   factory VersionModel.fromJson(Map<String, dynamic> json) {
@@ -31,7 +34,9 @@ class VersionModel {
     return VersionModel(
       version: json['version'],
       appStatus: appStatus,
-      isProd: json['is_prod']
+      isProd: json['is_prod'],
+      features: (json['features'] as List)
+          .map((featureJson) => FeatureModel.fromJson(featureJson)).toList(),
     );
   }
 

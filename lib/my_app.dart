@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/services/firebase_service.dart';
-import 'package:test_app/core/services/network_service/network_service.dart';
 import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
-import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
-import 'package:test_app/features/loading_page/loading_page.dart';
-import 'package:test_app/features/loading_page/repository/loading_page_repository.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/services/appmetrica_service.dart';
 import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
+import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
+import 'package:test_app/features/update_available_page/update_available_page.dart';
 
 void main() {
   initApp(
@@ -50,12 +48,10 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: BlocProvider(
-          create: (context) => LoadingPageBloc(
-              loadingPageRepository: LoadingPageRepository(
-                  networkService: HTTPNetworkService()
-              )
+          create: (context) => UpdateAvailablePageBloc(
+            configService: GetIt.instance<AppConfig>().remoteConfigService,
           ),
-          child: LoadingPage(),
+          child: UpdateAvailablePage(),
         )
       // switch (appStatus) {
       //   AppStatus.technicalWorks => BlocProvider(
