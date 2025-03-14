@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/marketplace.dart';
-import 'package:test_app/services/remote_config_service/remote_config_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'update_available_page_event.dart';

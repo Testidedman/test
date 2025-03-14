@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/core/services/firebase_service.dart';
+import 'package:test_app/core/services/network_service/network_service.dart';
+import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
-import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
-import 'package:test_app/features/technical_work/technical_work_page.dart';
-import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
-import 'package:test_app/features/update_available_page/update_available_page.dart';
+import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
+import 'package:test_app/features/loading_page/loading_page.dart';
+import 'package:test_app/features/loading_page/repository/loading_page_repository.dart';
 import 'package:test_app/core/utils/app_config.dart';
-import 'package:test_app/services/appmetrica_service.dart';
-import 'package:test_app/services/firebase_service.dart';
-import 'package:test_app/services/remote_config_service/firebase_remote_config_service.dart';
-import 'package:test_app/services/remote_config_service/remote_config_service.dart';
+import 'package:test_app/core/services/appmetrica_service.dart';
+import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
 
 void main() {
   initApp(
-    AppConfig(
+      AppConfig(
         remoteConfigService: FirebaseRemoteConfigService(),
         marketplace: Marketplace.googlePlay,
-    )
+      )
   );
 }
 
@@ -44,26 +44,34 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: switch (appStatus) {
-        AppStatus.technicalWorks => BlocProvider(
-            create: (context) => TechnicalWorkBloc(),
-            child: TechnicalWorkPage(),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: BlocProvider(
+          create: (context) => LoadingPageBloc(
+              loadingPageRepository: LoadingPageRepository(
+                  networkService: HTTPNetworkService()
+              )
           ),
-        AppStatus.updateAvailable => BlocProvider(
-            create: (context) => UpdateAvailablePageBloc(
-              configService: GetIt.instance<AppConfig>().remoteConfigService,
-            ),
-            child: UpdateAvailablePage(),
-          ),
-        AppStatus.needUpdate =>
-          const MyHomePage(title: 'Flutter Demo Home Page2'),
-        AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
-      },
+          child: LoadingPage(),
+        )
+      // switch (appStatus) {
+      //   AppStatus.technicalWorks => BlocProvider(
+      //       create: (context) => TechnicalWorkBloc(),
+      //       child: TechnicalWorkPage(),
+      //     ),
+      //   AppStatus.updateAvailable => BlocProvider(
+      //       create: (context) => UpdateAvailablePageBloc(
+      //         configService: GetIt.instance<AppConfig>().remoteConfigService,
+      //       ),
+      //       child: UpdateAvailablePage(),
+      //     ),
+      //   AppStatus.needUpdate =>
+      //     const MyHomePage(title: 'Flutter Demo Home Page2'),
+      //   AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
+      // },
     );
   }
 }
