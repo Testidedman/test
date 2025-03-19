@@ -10,7 +10,7 @@ class FeatureModel {
   factory FeatureModel.fromJson(Map<String, dynamic> json) {
     return FeatureModel(
         text: json['text'],
-        isFixed: json['is_fixed']
+        isFixed: json['is_fix']
     );
   }
 }

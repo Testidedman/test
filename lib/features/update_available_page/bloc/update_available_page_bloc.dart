@@ -14,8 +14,8 @@ class UpdateAvailablePageBloc extends Bloc<UpdateAvailablePageEvent, UpdateAvail
     required final RemoteConfigService configService
   }): _configService = configService,
         super(UpdateAvailablePageState()) {
-    on<UpdateAvailablePageEventTapMarketPlace>(_tapMarketPlace);
     on<UpdateAvailablePageEventInit>(_init);
+    on<UpdateAvailablePageEventTapMarketPlace>(_tapMarketPlace);
   }
 
 

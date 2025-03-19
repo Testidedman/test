@@ -64,22 +64,17 @@ class UpdateAvailablePage extends StatelessWidget {
                             description: state.version
                         ),
                         SizedBox(height: 12),
-                        ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: state.features.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 12),
-                                child: CustomTile(
-                                    image: ImageConstants.arrow,
-                                    title: state.features[index].text,
-                                    description: state.features[index].isFixed
-                                        ? 'fixed'
-                                        : 'is not fixed'
-                                ),
-                              );
-                            }
-                        ),
+                        for(int index = 0; index < state.features.length; index++)
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: CustomTile(
+                                image: ImageConstants.arrow,
+                                title: state.features[index].text,
+                                description: state.features[index].isFixed
+                                    ? 'fixed'
+                                    : 'is not fixed'
+                            ),
+                          ),
                         SizedBox(height: 12),
                         CustomButton(
                           text: 'Обновить сейчас',

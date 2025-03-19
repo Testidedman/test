@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         home: BlocProvider(
           create: (context) => UpdateAvailablePageBloc(
             configService: GetIt.instance<AppConfig>().remoteConfigService,
-          ),
+          )..add(UpdateAvailablePageEventInit()),
           child: UpdateAvailablePage(),
         )
       // switch (appStatus) {
