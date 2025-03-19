@@ -12,7 +12,7 @@ import 'package:test_app/core/services/remote_config_service/firebase_remote_con
 import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
 import 'package:test_app/features/update_available_page/update_available_page.dart';
 
-void main() async {
+void main() {
   initApp(
       AppConfig(
         remoteConfigService: FirebaseRemoteConfigService(),
