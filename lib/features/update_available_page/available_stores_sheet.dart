@@ -41,17 +41,22 @@ class AvailableStoresSheet extends StatelessWidget {
                   onTap: () {
                     context.read<UpdateAvailablePageBloc>().add(
                         UpdateAvailablePageEventTapMarketPlace(
-                            marketPlace: Marketplace.googlePlay,
+                          marketPlace: Marketplace.googlePlay,
                         )
                     );
                   },
                   image: ImageConstants.arrow,
-                  title: 'Что нового?',
+                  title: 'Скачать',
                 ),
                 SizedBox(height: 24),
-                CustomTile(
+                CustomTile(onTap: () {
+                  Navigator.pop(context);
+                  context.read<UpdateAvailablePageBloc>().add(
+                      UpdateAvailablePageEventDownloadAPK()
+                  );
+                },
                   image: ImageConstants.arrow,
-                  title: 'Что нового?',
+                  title: 'Скачать APK - файл',
                 ),
                 SizedBox(height: 24),
                 CustomTile(

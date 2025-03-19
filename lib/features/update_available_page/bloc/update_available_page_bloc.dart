@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/models/feature_model.dart';
 import 'package:test_app/core/models/version_model.dart';
+import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,7 @@ class UpdateAvailablePageBloc extends Bloc<UpdateAvailablePageEvent, UpdateAvail
         super(UpdateAvailablePageState()) {
     on<UpdateAvailablePageEventInit>(_init);
     on<UpdateAvailablePageEventTapMarketPlace>(_tapMarketPlace);
+    on<UpdateAvailablePageEventDownloadAPK>(_downloadAPK);
   }
 
 
@@ -45,6 +47,18 @@ class UpdateAvailablePageBloc extends Bloc<UpdateAvailablePageEvent, UpdateAvail
       emit(state.copyWith(isError: true));
       await Future.delayed(Duration(seconds: 4));
       emit(state.copyWith(isError: false));
+    }
+  }
+
+  Future<void> _downloadAPK(
+      UpdateAvailablePageEventDownloadAPK event,
+      Emitter<UpdateAvailablePageState> emit
+      ) async {
+    try {
+      await DownloadService.download();
+    }
+    catch (_) {
+      rethrow;
     }
   }
 }
