@@ -13,7 +13,7 @@ abstract class INetworkService {
 
 class HTTPNetworkService extends INetworkService {
 
-  final Talker talker = Talker();
+  final Talker _talker = Talker();
 
   String _getPrettyJSONString(Map<String, dynamic> jsonObject) {
     const encoder = JsonEncoder.withIndent('\t');
@@ -124,7 +124,7 @@ class HTTPNetworkService extends INetworkService {
       ){
     final getIt = GetIt.instance;
     final String baseUrl = getIt<NetworkConfig>().baseUrl;
-    talker.logCustom(CustomLog(
+    _talker.logCustom(CustomLog(
         '\nType: $type'
             '\nurl: $baseUrl$url'
             '${body == null ? '' : '\nbody: $body'}',
@@ -142,7 +142,7 @@ class HTTPNetworkService extends INetworkService {
       ){
     final getIt = GetIt.instance;
     final String baseUrl = getIt<NetworkConfig>().baseUrl;
-    talker.logCustom(CustomLog(
+    _talker.logCustom(CustomLog(
         '\nType: $type'
             '\nurl: $baseUrl$url'
             '\nStatus: $statusCode'
