@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/firebase_service.dart';
 import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/enums/app_status.dart';
@@ -22,6 +23,7 @@ void main() {
 
 void initApp(AppConfig appConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DownloadService.init();
   await FirebaseService.init();
   GetIt.instance.registerSingleton<AppConfig>(appConfig);
   final RemoteConfigService remoteConfigService = appConfig.remoteConfigService;

@@ -11,3 +11,6 @@ class UpdateAvailablePageEventTapMarketPlace extends UpdateAvailablePageEvent {
 }
 
 class UpdateAvailablePageEventInit extends UpdateAvailablePageEvent {}
+
+class UpdateAvailablePageEventDownloadAPK extends UpdateAvailablePageEvent {}
+
