@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:test_app/core/models/error_model.dart';
+import 'package:test_app/core/services/network_service/custom_log.dart';
 import 'package:test_app/core/services/network_service/network_config.dart';
 
 abstract class INetworkService {
@@ -11,10 +13,17 @@ abstract class INetworkService {
 
 class HTTPNetworkService extends INetworkService {
 
+  final Talker talker = Talker();
+
+  String _getPrettyJSONString(Map<String, dynamic> jsonObject) {
+    const encoder = JsonEncoder.withIndent('\t');
+    return encoder.convert(jsonObject);
+  }
+
   @override
   Future<Map<String, dynamic>> get(String url) async {
     try {
-      // logRequest('get', url);
+      logRequest('get', url);
       final getIt = GetIt.instance;
       final String baseUrl = getIt<NetworkConfig>().baseUrl;
       http.Response response = await http.get(
@@ -24,13 +33,13 @@ class HTTPNetworkService extends INetworkService {
           'Authorization': 'Bearer accessToken'
         },
       );
-      // logResponse(response.statusCode!, response.data, 'get', url);
+      logResponse(response.statusCode, jsonDecode(response.body), 'get', url);
       switch (response.statusCode) {
         case 200:
           return jsonDecode(response.body);
         case 401:
         // await refresh();
-        // logRequest('get', url);
+        logRequest('get', url);
           http.Response response = await http.get(
             Uri.parse('$baseUrl$url'),
             headers: <String, String>{
@@ -38,7 +47,7 @@ class HTTPNetworkService extends INetworkService {
               'Authorization': 'Bearer accessToken'
             },
           );
-          // logResponse(response.statusCode!, response.data, 'get', url);
+          logResponse(response.statusCode, jsonDecode(response.body), 'get', url);
           switch (response.statusCode) {
             case 200:
               return jsonDecode(response.body);
@@ -54,9 +63,7 @@ class HTTPNetworkService extends INetworkService {
               message: response.body
           );
       }
-    } catch (e, trace) {
-      // log(e.toString());
-      // log(trace.toString());
+    } catch (_) {
       rethrow;
     }
   }
@@ -74,13 +81,13 @@ class HTTPNetworkService extends INetworkService {
           },
           body: jsonEncode(body)
       );
-      // logResponse(response.statusCode, response.body, 'post', url);
+      logResponse(response.statusCode, jsonDecode(response.body), 'post', url);
       switch (response.statusCode) {
         case 200:
           return jsonDecode(response.body);
         case 401:
         // await refresh();
-        // logRequest('post', url);
+          logRequest('post', url);
           http.Response response = await http.post(
             Uri.parse('$baseUrl$url'),
             headers: <String, String>{
@@ -89,7 +96,7 @@ class HTTPNetworkService extends INetworkService {
             },
             body: jsonEncode(body),
           );
-          // logResponse(response.statusCode, response.body, 'post', url);
+          logResponse(response.statusCode, jsonDecode(response.body), 'post', url);
           switch (response.statusCode) {
             case 200:
               return jsonDecode(response.body);
@@ -108,5 +115,40 @@ class HTTPNetworkService extends INetworkService {
     }  catch (_) {
       rethrow;
     }
+  }
+
+  void logRequest(
+      String type,
+      String url,
+      {Map<String, dynamic>? body}
+      ){
+    final getIt = GetIt.instance;
+    final String baseUrl = getIt<NetworkConfig>().baseUrl;
+    talker.logCustom(CustomLog(
+        '\nType: $type'
+            '\nurl: $baseUrl$url'
+            '${body == null ? '' : '\nbody: $body'}',
+        // '${dio.options.headers}',
+        'REQUEST',
+        015
+    ));
+  }
+
+  void logResponse(
+      int statusCode,
+      Map<String, dynamic> body,
+      String type,
+      String url
+      ){
+    final getIt = GetIt.instance;
+    final String baseUrl = getIt<NetworkConfig>().baseUrl;
+    talker.logCustom(CustomLog(
+        '\nType: $type'
+            '\nurl: $baseUrl$url'
+            '\nStatus: $statusCode'
+            '\nBody: ${_getPrettyJSONString(body)}',
+        'RESPONSE',
+        statusCode >= 200 && statusCode <= 299 ? 046 : 009
+    ));
   }
 }
