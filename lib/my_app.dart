@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/firebase_service.dart';
@@ -9,8 +8,7 @@ import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/services/appmetrica_service.dart';
 import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
-import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
-import 'package:test_app/features/update_available_page/update_available_page.dart';
+import 'package:test_app/features/settings_page/settings_page.dart';
 
 void main() {
   initApp(
@@ -49,12 +47,13 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: BlocProvider(
-          create: (context) => UpdateAvailablePageBloc(
-            configService: GetIt.instance<AppConfig>().remoteConfigService,
-          )..add(UpdateAvailablePageEventInit()),
-          child: UpdateAvailablePage(),
-        )
+        home: SettingsPage()
+        // BlocProvider(
+        //   create: (context) => UpdateAvailablePageBloc(
+        //     configService: GetIt.instance<AppConfig>().remoteConfigService,
+        //   )..add(UpdateAvailablePageEventInit()),
+        //   child: UpdateAvailablePage(),
+        // )
       // switch (appStatus) {
       //   AppStatus.technicalWorks => BlocProvider(
       //       create: (context) => TechnicalWorkBloc(),
