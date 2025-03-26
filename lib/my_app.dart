@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:test_app/core/bloc/common_bloc.dart';
 import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/firebase_service.dart';
 import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
+import 'package:test_app/core/services/system_color_service.dart';
 import 'package:test_app/enums/app_status.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/services/appmetrica_service.dart';
 import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
 import 'package:test_app/features/settings_page/settings_page.dart';
+import 'package:test_app/features/settings_page/widgets/colors_page/colors_page.dart';
 
 void main() {
   initApp(
@@ -41,34 +45,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+    final color = SystemColorService.getSystemColor(context);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CommonBloc>(
+          create: (BuildContext context) => CommonBloc()..add(
+              CommonEventInit(color: color)
+          ),
         ),
-        home: SettingsPage()
+      ],
+      child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: SettingsPage()
         // BlocProvider(
         //   create: (context) => UpdateAvailablePageBloc(
         //     configService: GetIt.instance<AppConfig>().remoteConfigService,
         //   )..add(UpdateAvailablePageEventInit()),
         //   child: UpdateAvailablePage(),
         // )
-      // switch (appStatus) {
-      //   AppStatus.technicalWorks => BlocProvider(
-      //       create: (context) => TechnicalWorkBloc(),
-      //       child: TechnicalWorkPage(),
-      //     ),
-      //   AppStatus.updateAvailable => BlocProvider(
-      //       create: (context) => UpdateAvailablePageBloc(
-      //         configService: GetIt.instance<AppConfig>().remoteConfigService,
-      //       ),
-      //       child: UpdateAvailablePage(),
-      //     ),
-      //   AppStatus.needUpdate =>
-      //     const MyHomePage(title: 'Flutter Demo Home Page2'),
-      //   AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
-      // },
+        // switch (appStatus) {
+        //   AppStatus.technicalWorks => BlocProvider(
+        //       create: (context) => TechnicalWorkBloc(),
+        //       child: TechnicalWorkPage(),
+        //     ),
+        //   AppStatus.updateAvailable => BlocProvider(
+        //       create: (context) => UpdateAvailablePageBloc(
+        //         configService: GetIt.instance<AppConfig>().remoteConfigService,
+        //       ),
+        //       child: UpdateAvailablePage(),
+        //     ),
+        //   AppStatus.needUpdate =>
+        //     const MyHomePage(title: 'Flutter Demo Home Page2'),
+        //   AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
+        // },
+      ),
     );
   }
 }
