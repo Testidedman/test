@@ -13,7 +13,7 @@ class LoadingPageRepository extends ILoadingPageRepository {
 
   @override
   Future<void> getHealthCheck() async {
-    final Map<String,dynamic> response = await _networkService.get('healthcheck');
+    final Map<String, dynamic> response = await _networkService.get('healthcheck');
     print(response);
   }
 }
