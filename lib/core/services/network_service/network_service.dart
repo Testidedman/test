@@ -39,7 +39,7 @@ class HTTPNetworkService extends INetworkService {
           return jsonDecode(response.body);
         case 401:
         // await refresh();
-        logRequest('get', url);
+          logRequest('get', url);
           http.Response response = await http.get(
             Uri.parse('$baseUrl$url'),
             headers: <String, String>{
@@ -71,6 +71,7 @@ class HTTPNetworkService extends INetworkService {
   @override
   Future<Map<String, dynamic>> post(String url, Map<String, dynamic> body) async {
     try {
+      logRequest('post', url, body: body);
       final getIt = GetIt.instance;
       final String baseUrl = getIt<NetworkConfig>().baseUrl;
       http.Response response = await http.post(

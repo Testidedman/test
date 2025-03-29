@@ -3,4 +3,5 @@ class ImageConstants {
   static const String arrow = 'assets/icons/arrow.svg';
   static const String technicalWork = 'assets/images/technical_work.png';
   static const String loadingPage = 'assets/images/loading_page.png';
+  static const String logInPage = 'assets/images/log_in_page.png';
 }

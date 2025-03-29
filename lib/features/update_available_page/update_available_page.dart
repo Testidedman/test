@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/core/constants/image_constants.dart';
+import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/widgets/custom_button.dart';
 import 'package:test_app/core/widgets/custom_tile.dart';
 import 'package:test_app/features/update_available_page/available_stores_sheet.dart';
@@ -10,6 +12,15 @@ import 'package:test_app/core/services/remote_config_service/firebase_remote_con
 
 class UpdateAvailablePage extends StatelessWidget {
   const UpdateAvailablePage({super.key});
+
+  static Route<String> route() => MaterialPageRoute(
+      builder: (context) => BlocProvider(
+        create: (context) => UpdateAvailablePageBloc(
+            configService: GetIt.instance<AppConfig>().remoteConfigService
+        ),
+        child: UpdateAvailablePage(),
+      )
+  );
 
   @override
   Widget build(BuildContext context) {
