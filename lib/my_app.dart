@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/bloc/common_bloc.dart';
+import 'package:test_app/core/services/database_service/database_service.dart';
+import 'package:test_app/core/services/database_service/idatabase_service.dart';
 import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/firebase_service.dart';
+import 'package:test_app/core/services/network_service/network_service.dart';
 import 'package:test_app/core/services/remote_config_service/remote_config_service.dart';
 import 'package:test_app/core/services/system_color_service.dart';
 import 'package:test_app/enums/app_status.dart';
@@ -11,8 +14,13 @@ import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/services/appmetrica_service.dart';
 import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
+import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
+import 'package:test_app/features/loading_page/loading_page.dart';
+import 'package:test_app/features/loading_page/repository/loading_page_repository.dart';
 import 'package:test_app/features/settings_page/settings_page.dart';
 import 'package:test_app/features/settings_page/widgets/colors_page/colors_page.dart';
+import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
+import 'package:test_app/features/update_available_page/update_available_page.dart';
 
 void main() {
   initApp(
@@ -27,6 +35,7 @@ void initApp(AppConfig appConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
   await DownloadService.init();
   await FirebaseService.init();
+  await DataBaseService().init();
   GetIt.instance.registerSingleton<AppConfig>(appConfig);
   final RemoteConfigService remoteConfigService = appConfig.remoteConfigService;
   await remoteConfigService.init();
@@ -60,8 +69,15 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: SettingsPage()
-        // BlocProvider(
+          home: BlocProvider<LoadingPageBloc>(
+            create: (context) => LoadingPageBloc(
+                loadingPageRepository: LoadingPageRepository(
+                    networkService: HTTPNetworkService()
+                )
+            )..add(LoadingPageEventInit()),
+            child: LoadingPage(),
+          )
+        // home: BlocProvider<UpdateAvailablePageBloc>(
         //   create: (context) => UpdateAvailablePageBloc(
         //     configService: GetIt.instance<AppConfig>().remoteConfigService,
         //   )..add(UpdateAvailablePageEventInit()),
