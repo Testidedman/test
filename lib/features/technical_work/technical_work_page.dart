@@ -8,6 +8,14 @@ import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
 class TechnicalWorkPage extends StatelessWidget {
   const TechnicalWorkPage({super.key});
 
+  static Route<String> route() =>
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (context) => TechnicalWorkBloc(),
+          child: TechnicalWorkPage(),
+        );
+      });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +30,8 @@ class TechnicalWorkPage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 12),
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 24, bottom: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -60,7 +69,8 @@ class TechnicalWorkPage extends StatelessWidget {
                       colorText: Colors.white,
                       text: 'Выйти из приложения',
                       onTap: () {
-                        context.read<TechnicalWorkBloc>().add(TechnicalWorkEventExitApp());
+                        context.read<TechnicalWorkBloc>().add(
+                            TechnicalWorkEventExitApp());
                       }
                   ),
                   SizedBox(height: 12),

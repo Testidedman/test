@@ -2,5 +2,6 @@ enum AppStatus {
   technicalWorks,
   updateAvailable,
   needUpdate,
-  none
+  none,
+  success,
 }
