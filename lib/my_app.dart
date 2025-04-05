@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:test_app/core/bloc/common_bloc.dart';
 import 'package:test_app/core/services/database_service/database_service.dart';
 import 'package:test_app/core/services/network_service/network_service.dart';
+import 'package:test_app/core/services/push_notification_service/push_notification_service.dart';
 import 'package:test_app/core/services/system_color_service.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/core/utils/app_config.dart';
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
             create: (context) => LoadingPageBloc(
                 loadingPageRepository: LoadingPageRepository(
                     networkService: HTTPNetworkService()
-                )
+                ),
+                pushNotificationService: PushNotificationService()
             )..add(LoadingPageEventInit()),
             child: LoadingPage(),
           )

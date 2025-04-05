@@ -27,8 +27,8 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(text: 'tagidick.tagidick1@gmail.com');
+  final TextEditingController _passwordController = TextEditingController(text: '12345678');
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,13 @@ class _LogInPageState extends State<LogInPage> {
                               colorButton: Color(0xff243647),
                               colorText: Colors.white,
                               text: 'Google',
-                              onTap: () {}
+                              onTap: () {
+                                context.read<LogInPageBloc>().add(
+                                    GoogleRegistrationEvent(
+                                        email: _emailController.text
+                                    )
+                                );
+                              }
                           ),
                         ),
                       ],

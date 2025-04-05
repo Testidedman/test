@@ -21,6 +21,7 @@ class CustomTextField extends StatelessWidget {
       ),
       child: TextField(
           controller: controller,
+          style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
               hintText: hintText,
               hintStyle: GoogleFonts.beVietnamPro(

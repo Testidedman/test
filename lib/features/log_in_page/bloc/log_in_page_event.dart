@@ -11,3 +11,11 @@ class LogInPageRegistrationEvent extends LogInPageEvent {
     required this.password
   });
 }
+
+class GoogleRegistrationEvent extends LogInPageEvent {
+  final String email;
+
+  GoogleRegistrationEvent({
+    required this.email
+  });
+}

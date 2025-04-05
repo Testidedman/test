@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:test_app/enums/process_status.dart';
 import 'package:test_app/features/log_in_page/repository/Ilog_in_page_repository.dart';
 
@@ -11,6 +12,7 @@ class LogInPageBloc extends Bloc<LogInPageEvent, LogInPageState> {
   }): _logInPageRepository = logInPageRepository,
         super(LogInPageState()) {
     on<LogInPageRegistrationEvent>(_registration);
+    on<GoogleRegistrationEvent>(_googleRegistration);
   }
 
   final ILogInPageRepository _logInPageRepository;
@@ -28,6 +30,19 @@ class LogInPageBloc extends Bloc<LogInPageEvent, LogInPageState> {
       emit(state.copyWith(status: ProcessStatus.nextPage));
     } catch (_) {
       emit(state.copyWith(status: ProcessStatus.success));
+    }
+  }
+
+  Future<void> _googleRegistration(
+      GoogleRegistrationEvent event,
+      Emitter<LogInPageState> emit
+      ) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    try {
+      final googleUser = await googleSignIn.signIn();
+      print(googleUser?.email);
+    } catch (error) {
+      print(error);
     }
   }
 }
