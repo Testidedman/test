@@ -27,7 +27,7 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
 
-  final TextEditingController _emailController = TextEditingController(text: 'tagidick.tagidick1@gmail.com');
+  final TextEditingController _emailController = TextEditingController(text: 'tagidick2.tagidick1@gmail.com');
   final TextEditingController _passwordController = TextEditingController(text: '12345678');
 
   @override

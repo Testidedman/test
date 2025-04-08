@@ -9,6 +9,8 @@ import 'package:test_app/core/services/system_color_service.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
+import 'package:test_app/features/home_page/bloc/home_page_bloc.dart';
+import 'package:test_app/features/home_page/home_page.dart';
 import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
 import 'package:test_app/features/loading_page/loading_page.dart';
 import 'package:test_app/features/loading_page/repository/loading_page_repository.dart';
@@ -51,15 +53,19 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: BlocProvider<LoadingPageBloc>(
-            create: (context) => LoadingPageBloc(
-                loadingPageRepository: LoadingPageRepository(
-                    networkService: HTTPNetworkService()
-                ),
-                pushNotificationService: PushNotificationService()
-            )..add(LoadingPageEventInit()),
-            child: LoadingPage(),
+          home: BlocProvider(
+            create: (context) => HomePageBloc(),
+            child: HomePage(),
           )
+        // BlocProvider<LoadingPageBloc>(
+        //   create: (context) => LoadingPageBloc(
+        //       loadingPageRepository: LoadingPageRepository(
+        //           networkService: HTTPNetworkService()
+        //       ),
+        //       pushNotificationService: PushNotificationService()
+        //   )..add(LoadingPageEventInit()),
+        //   child: LoadingPage(),
+        // )
         // home: BlocProvider<UpdateAvailablePageBloc>(
         //   create: (context) => UpdateAvailablePageBloc(
         //     configService: GetIt.instance<AppConfig>().remoteConfigService,

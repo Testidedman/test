@@ -30,10 +30,13 @@ class ColorsPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.arrow_back_rounded,
-                    size: 24,
-                    color: Colors.white,
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Icon(
+                      Icons.arrow_back_rounded,
+                      size: 24,
+                      color: Colors.white,
+                    ),
                   ),
                   Text(
                     'Цвет темы',

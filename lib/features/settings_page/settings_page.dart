@@ -3,10 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/core/bloc/common_bloc.dart';
 import 'package:test_app/core/widgets/custom_line_text.dart';
+import 'package:test_app/features/settings_page/bloc/settings_bloc.dart';
 import 'package:test_app/features/settings_page/widgets/colors_page/colors_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
+
+  static Route<String> route() => MaterialPageRoute(builder: (context) {
+    return BlocProvider(
+      create: (context) => SettingsBloc(),
+      child: SettingsPage(),
+    );
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +50,13 @@ class SettingsPage extends StatelessWidget {
               ),
               SizedBox(height: 24),
               CustomLineText(
-                  text: 'Размер текста', onTap: () {  },
+                text: 'Размер текста', onTap: () {  },
               ),
               SizedBox(height: 32),
               CustomLineText(
-                  text: 'Цвет фона',
+                text: 'Цвет фона',
                 onTap: () {
-                    Navigator.of(context).push(ColorsPage().route());
+                  Navigator.of(context).push(ColorsPage().route());
                 },
               ),
               SizedBox(height: 32),
@@ -62,19 +70,19 @@ class SettingsPage extends StatelessWidget {
               ),
               SizedBox(height: 24),
               CustomLineText(
-                  text: 'Безопасность', onTap: () {  },
+                text: 'Безопасность', onTap: () {  },
               ),
               SizedBox(height: 24),
               CustomLineText(
-                  text: 'Уведомления', onTap: () {  },
+                text: 'Уведомления', onTap: () {  },
               ),
               SizedBox(height: 24),
               CustomLineText(
-                  text: 'Язык', onTap: () {  },
+                text: 'Язык', onTap: () {  },
               ),
               SizedBox(height: 24),
               CustomLineText(
-                  text: 'Данные', onTap: () {  },
+                text: 'Данные', onTap: () {  },
               ),
               SizedBox(height: 65),
               Center(
