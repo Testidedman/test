@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/core/constants/image_constants.dart';
 import 'package:test_app/enums/app_status.dart';
+import 'package:test_app/features/home_page/home_page.dart';
 import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
 import 'package:test_app/features/log_in_page/log_in_page.dart';
-import 'package:test_app/features/technical_work/technical_work_page.dart';
+import 'package:test_app/features/technical_work_page/technical_work_page.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -16,7 +17,6 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage>
     with TickerProviderStateMixin {
-
   late AnimationController controller;
   bool determinate = false;
 
@@ -26,9 +26,11 @@ class _LoadingPageState extends State<LoadingPage>
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
-    )..addListener(() {
-      setState(() {});
-    })..forward();
+    )
+      ..addListener(() {
+        setState(() {});
+      })
+      ..forward();
   }
 
   @override
@@ -47,7 +49,8 @@ class _LoadingPageState extends State<LoadingPage>
             //Navigator.of(context).push(UpdateAvailablePage.route());
             break;
           default:
-            Navigator.of(context).push(LogInPage.route());
+            Navigator.of(context)
+                .push(state.isLogged ? HomePage.route : LogInPage.route());
             break;
         }
       },
@@ -63,8 +66,7 @@ class _LoadingPageState extends State<LoadingPage>
                 style: GoogleFonts.notoSerif(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
-                    color: Colors.white
-                ),
+                    color: Colors.white),
               ),
               SizedBox(height: 8),
               Image.asset(
@@ -81,8 +83,7 @@ class _LoadingPageState extends State<LoadingPage>
                       style: GoogleFonts.notoSerif(
                           fontWeight: FontWeight.w700,
                           fontSize: 28,
-                          color: Colors.white
-                      ),
+                          color: Colors.white),
                     ),
                     SizedBox(height: 28),
                     Row(
@@ -93,16 +94,14 @@ class _LoadingPageState extends State<LoadingPage>
                           style: GoogleFonts.notoSerif(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                         Text(
-                          '70%',
+                          '${(controller.value * 100).round()}%',
                           style: GoogleFonts.notoSerif(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                       ],
                     ),

@@ -7,11 +7,11 @@ class SystemColorService {
   static Color getSystemColor(BuildContext context) {
     final IDataBaseService database = DataBaseService();
     late bool isDark;
-    if (database.getSystemColor() == null) {
+    if (database.getSystemColor == null) {
       isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
       database.setSystemColor(isDark);
     } else {
-      isDark = database.getSystemColor()!;
+      isDark = database.getSystemColor!;
     }
 
     return isDark ? Color(0xff121A21) : Colors.white;

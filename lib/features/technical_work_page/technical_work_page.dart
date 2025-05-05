@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:test_app/core/constants/image_constants.dart';
 import 'package:test_app/core/widgets/custom_button.dart';
-import 'package:test_app/features/technical_work/bloc/technical_work_bloc.dart';
+import 'package:test_app/features/technical_work_page/bloc/technical_work_bloc.dart';
 
 class TechnicalWorkPage extends StatelessWidget {
   const TechnicalWorkPage({super.key});

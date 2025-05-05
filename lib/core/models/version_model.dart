@@ -28,7 +28,7 @@ class VersionModel {
         appStatus = AppStatus.needUpdate;
         break;
       default:
-        appStatus = AppStatus.none;
+        appStatus = AppStatus.success;
         break;
     }
     return VersionModel(

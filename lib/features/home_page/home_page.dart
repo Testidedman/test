@@ -4,10 +4,17 @@ import 'package:get_it/get_it.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:test_app/features/home_page/widgets/custom_bottom_bar.dart';
+import 'package:test_app/features/main_page/main_page.dart';
 import 'package:test_app/features/settings_page/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  static Route<String> route = MaterialPageRoute(
+      builder: (context) => BlocProvider(
+        create: (context) => HomePageBloc(),
+        child: HomePage(),
+      ));
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -20,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff121A21),
       body: Stack(
         children: [
           PageView(
@@ -28,12 +36,8 @@ class _HomePageState extends State<HomePage> {
               Navigator(
                 key: GetIt.instance<AppConfig>().homeKey,
                 onGenerateRoute: (route) => MaterialPageRoute(
-                  settings: route,
-                  builder: (context) =>
-                      Container(
-                        height: 50,
-                        color: Colors.blueAccent,
-                      ),
+                    settings: route,
+                    builder: (context) => MainPage()
                 ),
               ),
               Navigator(
@@ -121,8 +125,8 @@ class _HomePageState extends State<HomePage> {
                   },
                     child: CustomBottomBar(
                         index: 3,
-                        text: 'Settings',
-                        icon: Icons.settings
+                        text: 'Profile',
+                        icon: Icons.person
                     ),
                   ),
                 ],

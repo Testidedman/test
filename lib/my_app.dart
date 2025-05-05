@@ -14,6 +14,8 @@ import 'package:test_app/features/home_page/home_page.dart';
 import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
 import 'package:test_app/features/loading_page/loading_page.dart';
 import 'package:test_app/features/loading_page/repository/loading_page_repository.dart';
+import 'package:test_app/features/main_page/main_page.dart';
+import 'package:test_app/features/profile_page/profile_page.dart';
 
 void main() {
   initApp(
@@ -53,19 +55,16 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: BlocProvider(
-            create: (context) => HomePageBloc(),
-            child: HomePage(),
+          home: BlocProvider<LoadingPageBloc>(
+            create: (context) => LoadingPageBloc(
+                loadingPageRepository: LoadingPageRepository(
+                    networkService: HTTPNetworkService(),
+                  dataBaseService: DataBaseService()
+                ),
+                pushNotificationService: PushNotificationService()
+            )..add(LoadingPageEventInit()),
+            child: LoadingPage(),
           )
-        // BlocProvider<LoadingPageBloc>(
-        //   create: (context) => LoadingPageBloc(
-        //       loadingPageRepository: LoadingPageRepository(
-        //           networkService: HTTPNetworkService()
-        //       ),
-        //       pushNotificationService: PushNotificationService()
-        //   )..add(LoadingPageEventInit()),
-        //   child: LoadingPage(),
-        // )
         // home: BlocProvider<UpdateAvailablePageBloc>(
         //   create: (context) => UpdateAvailablePageBloc(
         //     configService: GetIt.instance<AppConfig>().remoteConfigService,

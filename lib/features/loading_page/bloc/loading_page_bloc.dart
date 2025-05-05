@@ -17,7 +17,7 @@ class LoadingPageBloc extends Bloc<LoadingPageEvent, LoadingPageState> {
     required final ILoadingPageRepository loadingPageRepository,
     required final IPushNotificationService pushNotificationService
   }): _loadingPageRepository = loadingPageRepository,
-  _pushNotificationService = pushNotificationService,
+        _pushNotificationService = pushNotificationService,
         super(LoadingPageState()) {
     on<LoadingPageEventInit>(_init);
   }
@@ -38,7 +38,13 @@ class LoadingPageBloc extends Bloc<LoadingPageEvent, LoadingPageState> {
       final AppStatus appStatus = await remoteConfigService.getAppStatus();
       await AppmetricaService.init();
       await _loadingPageRepository.getHealthCheck();
-      emit(state.copyWith(appStatus: appStatus));
+      final bool isLogged = _loadingPageRepository.getAccessToken != null;
+      emit(
+          state.copyWith(
+            appStatus: appStatus,
+            isLogged: isLogged,
+          )
+      );
     }
     catch (_) {
       emit(state.copyWith(appStatus: AppStatus.technicalWorks));
