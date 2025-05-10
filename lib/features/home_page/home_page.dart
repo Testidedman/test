@@ -34,11 +34,8 @@ class _HomePageState extends State<HomePage> {
             controller: controller,
             children: [
               Navigator(
-                key: GetIt.instance<AppConfig>().homeKey,
-                onGenerateRoute: (route) => MaterialPageRoute(
-                    settings: route,
-                    builder: (context) => MainPage()
-                ),
+                  key: GetIt.instance<AppConfig>().homeKey,
+                  onGenerateRoute: (route) => MainPage.route()
               ),
               Navigator(
                 key: GetIt.instance<AppConfig>().searchKey,
