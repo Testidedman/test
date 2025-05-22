@@ -7,21 +7,21 @@ import 'package:test_app/core/services/network_service/custom_log.dart';
 import 'package:test_app/core/services/network_service/network_config.dart';
 
 abstract class INetworkService {
-  Future<Map<String, dynamic>> get(String url);
-  Future<Map<String, dynamic>> post(String url, Map<String, dynamic> body);
+  Future<dynamic> get(String url);
+  Future<dynamic> post(String url, Map<String, dynamic> body);
 }
 
 class HTTPNetworkService extends INetworkService {
 
   final Talker _talker = Talker();
 
-  String _getPrettyJSONString(Map<String, dynamic> jsonObject) {
+  String _getPrettyJSONString(dynamic jsonObject) {
     const encoder = JsonEncoder.withIndent('\t');
     return encoder.convert(jsonObject);
   }
 
   @override
-  Future<Map<String, dynamic>> get(String url) async {
+  Future<dynamic> get(String url) async {
     try {
       logRequest('get', url);
       final getIt = GetIt.instance;
@@ -69,7 +69,7 @@ class HTTPNetworkService extends INetworkService {
   }
 
   @override
-  Future<Map<String, dynamic>> post(String url, Map<String, dynamic> body) async {
+  Future<dynamic> post(String url, Map<String, dynamic> body) async {
     try {
       logRequest('post', url, body: body);
       final getIt = GetIt.instance;
@@ -137,7 +137,7 @@ class HTTPNetworkService extends INetworkService {
 
   void logResponse(
       int statusCode,
-      Map<String, dynamic> body,
+      dynamic body,
       String type,
       String url
       ){
