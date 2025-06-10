@@ -1,20 +1,22 @@
-import 'package:test_app/core/services/database_service/idatabase_service.dart';
+import 'package:injectable/injectable.dart';
 import 'package:test_app/core/services/network_service/network_service.dart';
+import 'package:test_app/core/services/storage_service.dart';
 
 abstract class ILoadingPageRepository {
   Future<void> getHealthCheck();
-  String? get getAccessToken;
+  Future<String?> getAccessToken();
 }
 
+@Injectable(as: ILoadingPageRepository)
 class LoadingPageRepository extends ILoadingPageRepository {
   LoadingPageRepository({
     required final INetworkService networkService,
-    required final IDataBaseService dataBaseService,
+    required final IStorageService storageService
   }): _networkService = networkService,
-        _dataBaseService = dataBaseService;
+        _storageService = storageService;
 
   final INetworkService _networkService;
-  final IDataBaseService _dataBaseService;
+  final IStorageService _storageService;
 
   @override
   Future<void> getHealthCheck() async {
@@ -22,7 +24,7 @@ class LoadingPageRepository extends ILoadingPageRepository {
   }
 
   @override
-  String? get getAccessToken {
-    return _dataBaseService.getAccessToken;
+  Future<String?> getAccessToken() async {
+    return _storageService.getAccessToken();
   }
 }

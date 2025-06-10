@@ -1,20 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:test_app/core/utils/app_config.dart';
+import 'package:test_app/core/services/app_router.dart';
 import 'package:test_app/features/home_page/bloc/home_page_bloc.dart';
 import 'package:test_app/features/home_page/widgets/custom_bottom_bar.dart';
-import 'package:test_app/features/main_page/main_page.dart';
-import 'package:test_app/features/settings_page/settings_page.dart';
 
+@RoutePage()
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
-  static Route<String> route = MaterialPageRoute(
-      builder: (context) => BlocProvider(
-        create: (context) => HomePageBloc(),
-        child: HomePage(),
-      ));
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -22,64 +15,34 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final PageController controller = PageController();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff121A21),
-      body: Stack(
-        children: [
-          PageView(
-            controller: controller,
-            children: [
-              Navigator(
-                  key: GetIt.instance<AppConfig>().homeKey,
-                  onGenerateRoute: (route) => MainPage.route()
-              ),
-              Navigator(
-                key: GetIt.instance<AppConfig>().searchKey,
-                onGenerateRoute: (route) => MaterialPageRoute(
-                  settings: route,
-                  builder: (context) =>
-                      Container(
-                        height: 50,
-                        color: Colors.amber,
-                      ),
-                ),
-              ),
-              Navigator(
-                key: GetIt.instance<AppConfig>().favoritesKey,
-                onGenerateRoute: (route) => MaterialPageRoute(
-                  settings: route,
-                  builder: (context) =>
-                      Container(
-                        height: 50,
-                        color: Colors.white,
-                      ),
-                ),
-              ),
-              Navigator(
-                key: GetIt.instance<AppConfig>().settingsKey,
-                onGenerateRoute: (route) => SettingsPage.route(),
-              )
-            ],
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
+    return BlocProvider(
+      create: (context) => HomePageBloc(),
+      child: AutoTabsScaffold(
+          routes: [
+            MainRoute(),
+            MainRoute(),
+            MainRoute(),
+            SettingsRoute()
+          ],
+          extendBody: true,
+          bottomNavigationBuilder: (context, tabsRouter) {
+            return Container(
+              height: 120,
               color: Color(0xff1A2633),
               padding: EdgeInsets.only(
                   top: 12,
-                  bottom: 12 + MediaQuery.of(context).padding.bottom
+                  bottom: 12 + MediaQuery
+                      .of(context)
+                      .padding
+                      .bottom
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(onTap: () {
-                    controller.jumpToPage(0);
+                    tabsRouter.setActiveIndex(0);
                     context.read<HomePageBloc>().add(ChangePageEvent(
                         index: 0
                     ));
@@ -91,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   GestureDetector(onTap: () {
-                    controller.jumpToPage(1);
+                    tabsRouter.setActiveIndex(1);
                     context.read<HomePageBloc>().add(ChangePageEvent(
                         index: 1
                     ));
@@ -103,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   GestureDetector(onTap: () {
-                    controller.jumpToPage(2);
+                    tabsRouter.setActiveIndex(2);
                     context.read<HomePageBloc>().add(ChangePageEvent(
                         index: 2
                     ));
@@ -115,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   GestureDetector(onTap: () {
-                    controller.jumpToPage(3);
+                    tabsRouter.setActiveIndex(3);
                     context.read<HomePageBloc>().add(ChangePageEvent(
                         index: 3
                     ));
@@ -128,9 +91,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-            ),
-          )
-        ],
+            );
+          }
       ),
     );
   }

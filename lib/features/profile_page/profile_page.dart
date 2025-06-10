@@ -1,14 +1,12 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:test_app/core/constants/image_constants.dart';
 import 'package:test_app/core/widgets/custom_button.dart';
+import 'package:test_app/gen/assets.gen.dart';
 
+@RoutePage()
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
-  static Route<String> route() => MaterialPageRoute(
-      builder: (context) => ProfilePage()
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +48,7 @@ class ProfilePage extends StatelessWidget {
                         shape: BoxShape.circle
                     ),
                     child: Image(
-                        image: AssetImage(ImageConstants.avatar)
+                        image: AssetImage(Assets.images.avatar.path)
                     ),
                   ),
                   SizedBox(height: 16),
