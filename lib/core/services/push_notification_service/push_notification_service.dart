@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:injectable/injectable.dart';
 import 'package:test_app/core/services/push_notification_service/ipush_notification_service.dart';
 
+@Injectable(as: IPushNotificationService)
 class PushNotificationService implements IPushNotificationService {
 
   @override

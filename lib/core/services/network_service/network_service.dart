@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:test_app/core/models/error_model.dart';
 import 'package:test_app/core/services/network_service/custom_log.dart';
@@ -11,6 +12,7 @@ abstract class INetworkService {
   Future<dynamic> post(String url, Map<String, dynamic> body);
 }
 
+@Injectable(as: INetworkService)
 class HTTPNetworkService extends INetworkService {
 
   final Talker _talker = Talker();

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 import 'package:test_app/core/services/appmetrica_service.dart';
 import 'package:test_app/core/services/download_service.dart';
 import 'package:test_app/core/services/firebase_service.dart';
@@ -12,6 +13,7 @@ import 'package:test_app/features/loading_page/repository/loading_page_repositor
 part 'loading_page_event.dart';
 part 'loading_page_state.dart';
 
+@Injectable()
 class LoadingPageBloc extends Bloc<LoadingPageEvent, LoadingPageState> {
   LoadingPageBloc({
     required final ILoadingPageRepository loadingPageRepository,

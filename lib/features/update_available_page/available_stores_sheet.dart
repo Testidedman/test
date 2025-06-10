@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/core/constants/image_constants.dart';
 import 'package:test_app/core/services/flushbar_service.dart';
 import 'package:test_app/core/widgets/custom_tile.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/features/update_available_page/bloc/update_available_page_bloc.dart';
+import 'package:test_app/gen/assets.gen.dart';
 
 class AvailableStoresSheet extends StatelessWidget {
   const AvailableStoresSheet({super.key});
@@ -45,7 +45,7 @@ class AvailableStoresSheet extends StatelessWidget {
                         )
                     );
                   },
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Скачать',
                 ),
                 SizedBox(height: 24),
@@ -55,32 +55,32 @@ class AvailableStoresSheet extends StatelessWidget {
                       UpdateAvailablePageEventDownloadAPK()
                   );
                 },
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Скачать APK - файл',
                 ),
                 SizedBox(height: 24),
                 CustomTile(
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Что нового?',
                 ),
                 SizedBox(height: 24),
                 CustomTile(
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Что нового?',
                 ),
                 SizedBox(height: 24),
                 CustomTile(
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Что нового?',
                 ),
                 SizedBox(height: 24),
                 CustomTile(
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Что нового?',
                 ),
                 SizedBox(height: 24),
                 CustomTile(
-                  image: ImageConstants.arrow,
+                  image: Assets.icons.arrow,
                   title: 'Что нового?',
                 ),
               ],

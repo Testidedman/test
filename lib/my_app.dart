@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:test_app/core/bloc/common_bloc.dart';
-import 'package:test_app/core/services/database_service/database_service.dart';
-import 'package:test_app/core/services/network_service/network_service.dart';
-import 'package:test_app/core/services/push_notification_service/push_notification_service.dart';
-import 'package:test_app/core/services/system_color_service.dart';
+import 'package:test_app/core/services/app_router.dart';
+import 'package:test_app/core/services/database/database_service/database_service.dart';
+import 'package:test_app/core/services/injector/injector.dart';
 import 'package:test_app/enums/marketplace.dart';
 import 'package:test_app/core/utils/app_config.dart';
 import 'package:test_app/core/services/remote_config_service/firebase_remote_config_service.dart';
-import 'package:test_app/features/home_page/bloc/home_page_bloc.dart';
-import 'package:test_app/features/home_page/home_page.dart';
-import 'package:test_app/features/loading_page/bloc/loading_page_bloc.dart';
-import 'package:test_app/features/loading_page/loading_page.dart';
-import 'package:test_app/features/loading_page/repository/loading_page_repository.dart';
-import 'package:test_app/features/main_page/main_page.dart';
-import 'package:test_app/features/profile_page/profile_page.dart';
 
 void main() {
   initApp(
@@ -28,6 +21,8 @@ void main() {
 
 void initApp(AppConfig appConfig) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
+  configureDependencies();
   await DataBaseService().init();
   GetIt.instance.registerSingleton<AppConfig>(appConfig);
   runApp(MyApp());
@@ -40,31 +35,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = SystemColorService.getSystemColor(context);
+    //final color = SystemColorService.getSystemColor(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider<CommonBloc>(
           create: (BuildContext context) => CommonBloc()..add(
-              CommonEventInit(color: color)
+              CommonEventInit(color: Colors.black)
           ),
         ),
       ],
-      child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: BlocProvider<LoadingPageBloc>(
-            create: (context) => LoadingPageBloc(
-                loadingPageRepository: LoadingPageRepository(
-                    networkService: HTTPNetworkService(),
-                  dataBaseService: DataBaseService()
-                ),
-                pushNotificationService: PushNotificationService()
-            )..add(LoadingPageEventInit()),
-            child: LoadingPage(),
-          )
+      child: MaterialApp.router(
+        routerConfig: getIt<AppRouter>().config(),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        builder: (context, child) {
+          return child!;
+        },
         // home: BlocProvider<UpdateAvailablePageBloc>(
         //   create: (context) => UpdateAvailablePageBloc(
         //     configService: GetIt.instance<AppConfig>().remoteConfigService,
@@ -86,54 +75,6 @@ class MyApp extends StatelessWidget {
         //     const MyHomePage(title: 'Flutter Demo Home Page2'),
         //   AppStatus.none => const MyHomePage(title: 'Flutter Demo Home Page3'),
         // },
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

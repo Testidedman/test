@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 import 'package:test_app/enums/process_status.dart';
 import 'package:test_app/features/log_in_page/models/registration_model.dart';
 import 'package:test_app/features/log_in_page/repository/Ilog_in_page_repository.dart';
@@ -7,6 +8,7 @@ import 'package:test_app/features/log_in_page/repository/Ilog_in_page_repository
 part 'log_in_page_event.dart';
 part 'log_in_page_state.dart';
 
+@Injectable()
 class LogInPageBloc extends Bloc<LogInPageEvent, LogInPageState> {
   LogInPageBloc({
     required final ILogInPageRepository logInPageRepository
