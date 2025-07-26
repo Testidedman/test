@@ -37,12 +37,13 @@ class MainPageRepository implements IMainPageRepository {
   Future<void> setBooks(List<BookModel> books) async {
     for (var book in books) {
       _bookModelDao.setBook(BookModelTableData(
-          title: book.title,
-          year: book.year,
-          pages: book.pages,
-          profilePicture: book.profilePicture,
-          authorId: book.authorId,
-          genres: book.genres
+        title: book.title,
+        year: book.year,
+        pages: book.pages,
+        profilePicture: book.profilePicture,
+        authorId: book.authorId,
+        genres: book.genres,
+        id: book.id,
       ));
     }
   }
@@ -53,12 +54,13 @@ class MainPageRepository implements IMainPageRepository {
     final List<BookModel> books = [];
     for(var book in booksFromDB) {
       books.add(BookModel(
-          title: book.title,
-          year: book.year,
-          pages: book.pages,
-          profilePicture: book.profilePicture,
-          authorId: book.authorId,
-          genres: book.genres
+        title: book.title,
+        year: book.year,
+        pages: book.pages,
+        profilePicture: book.profilePicture,
+        authorId: book.authorId,
+        genres: book.genres,
+        id: book.id,
       ));
     }
     return books;

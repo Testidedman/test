@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'dart:convert';
 
 class BookModelTable extends Table {
+  TextColumn get id => text()();
   TextColumn get title => text()();
   IntColumn get year => integer()();
   IntColumn get pages => integer()();
