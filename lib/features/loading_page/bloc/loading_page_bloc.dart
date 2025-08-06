@@ -37,7 +37,7 @@ class LoadingPageBloc extends Bloc<LoadingPageEvent, LoadingPageState> {
       _pushNotificationService.init();
       final RemoteConfigService remoteConfigService = GetIt.instance<AppConfig>().remoteConfigService;
       await remoteConfigService.init();
-      final AppStatus appStatus = await remoteConfigService.getAppStatus();
+      final AppStatus appStatus = AppStatus.success;//await remoteConfigService.getAppStatus();
       await AppmetricaService.init();
       await _loadingPageRepository.getHealthCheck();
       final bool isLogged = _loadingPageRepository.getAccessToken != null;

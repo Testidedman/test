@@ -23,14 +23,7 @@ class MainPageRepository implements IMainPageRepository {
 
   @override
   Future<List<BookModel>> getBooks() async {
-    final response = await _networkService.get('books/rating');
-
     return BookModel.mocks;
-    List<BookModel> books = [];
-    for (var i in response) {
-      books.add(BookModel.fromJson(i));
-    }
-    return books;
   }
 
   @override

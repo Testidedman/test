@@ -9,3 +9,11 @@ class BookPageEventInit extends BookPageEvent {
     required this.bookId
   });
 }
+
+class BookPageEventToggleFavourite extends BookPageEvent {
+  final String bookId;
+
+  BookPageEventToggleFavourite({
+    required this.bookId
+  });
+}

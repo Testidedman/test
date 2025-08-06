@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:test_app/features/book_page/book_page.dart';
+import 'package:test_app/features/favourites_page/favourites_page.dart';
 import 'package:test_app/features/home_page/home_page.dart';
 import 'package:test_app/features/loading_page/loading_page.dart';
 import 'package:test_app/features/log_in_page/log_in_page.dart';
@@ -30,6 +31,7 @@ class AppRouter extends RootStackRouter {
         page: HomeRoute.page,
         children: [
           AutoRoute(page: MainRoute.page),
+          AutoRoute(page: FavouritesRoute.page),
           AutoRoute(page: SettingsRoute.page),
         ]
     ),

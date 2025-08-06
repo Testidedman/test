@@ -1,0 +1,2 @@
+C:/Users/mesku/Documents/test/android/app/.cxx/Debug/5d591q5y/x86/CMakeFiles/edit_cache.dir
+C:/Users/mesku/Documents/test/android/app/.cxx/Debug/5d591q5y/x86/CMakeFiles/rebuild_cache.dir

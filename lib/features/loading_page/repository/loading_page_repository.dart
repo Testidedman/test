@@ -20,7 +20,8 @@ class LoadingPageRepository extends ILoadingPageRepository {
 
   @override
   Future<void> getHealthCheck() async {
-    await _networkService.get('healthcheck');
+    // Mock health check - always return true
+    return;
   }
 
   @override

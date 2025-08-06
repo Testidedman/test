@@ -16,12 +16,6 @@ class BookPageRepository implements IBookPageRepository {
 
   @override
   Future<BookModel> getBook(String bookId) async {
-    try {
-      await _networkService.get('book/$bookId');
-      return BookModel.mock;
-    }
-    catch (_) {
-      return BookModel.mock;
-    }
+    return BookModel.mock;
   }
 }

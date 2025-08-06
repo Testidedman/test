@@ -5,6 +5,8 @@ import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:test_app/core/services/database/book_model_table/book_model_dao.dart';
 import 'package:test_app/core/services/database/book_model_table/book_model_table.dart';
+import 'package:test_app/core/services/database/favourites_table/favourites_dao.dart';
+import 'package:test_app/core/services/database/favourites_table/favourites_table.dart';
 import 'package:path/path.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:drift/native.dart';
@@ -12,8 +14,8 @@ import 'package:drift/native.dart';
 part 'database.g.dart';
 
 @DriftDatabase(
-  tables: [BookModelTable],
-  daos: [BookModelDao]
+  tables: [BookModelTable, FavouritesTable],
+  daos: [BookModelDao, FavouritesDao]
 )
 
 @Singleton()

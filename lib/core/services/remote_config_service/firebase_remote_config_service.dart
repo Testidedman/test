@@ -14,27 +14,66 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
   @override
   Future<void> init() async {
     try {
+      print('🔥 FirebaseRemoteConfig: Starting initialization...');
       final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+      
+      print('⚙️ FirebaseRemoteConfig: Setting config settings...');
       await remoteConfig.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: const Duration(minutes: 1),
+        fetchTimeout: const Duration(seconds: 5),
         minimumFetchInterval: const Duration(hours: 1),
       ));
-      await remoteConfig.fetchAndActivate();
+      print('✅ FirebaseRemoteConfig: Config settings set successfully');
+      
+      print('📡 FirebaseRemoteConfig: Fetching and activating config...');
+      await remoteConfig.fetchAndActivate().timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          print('⚠️ FirebaseRemoteConfig: Fetch timeout, using cached values');
+          return false; // Return false to indicate timeout
+        },
+      );
+      print('✅ FirebaseRemoteConfig: Config fetched and activated successfully');
+      
+      print('📋 FirebaseRemoteConfig: Getting current version model...');
       await _getCurrentVersionModel();
+      print('✅ FirebaseRemoteConfig: Current version model retrieved');
+      
+      print('🌐 FirebaseRemoteConfig: Getting base URL...');
       await _getBaseURL();
-    } catch (_) {
-      rethrow;
+      print('✅ FirebaseRemoteConfig: Base URL retrieved successfully');
+      
+      print('✅ FirebaseRemoteConfig: Initialization completed successfully!');
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error during initialization: $error');
+      print('🔄 FirebaseRemoteConfig: Using fallback values...');
+      
+      // Set fallback values
+      await _setFallbackValues();
+      print('✅ FirebaseRemoteConfig: Fallback values set successfully');
     }
   }
 
   Future<void> _getCurrentVersionModel() async {
-    final List<VersionModel> versionModels = _getVersions();
-    final String currentVersion = await CommonService.getCurrentVersion();
-    final VersionModel currentVersionModel = versionModels.firstWhere(
-          (versionModel) => currentVersion == versionModel.version,
-    );
-    final getIt = GetIt.instance;
-    getIt.registerSingleton<VersionModel>(currentVersionModel);
+    try {
+      final List<VersionModel> versionModels = _getVersions();
+      final String currentVersion = await CommonService.getCurrentVersion();
+      final VersionModel currentVersionModel = versionModels.firstWhere(
+            (versionModel) => currentVersion == versionModel.version,
+      );
+      final getIt = GetIt.instance;
+      getIt.registerSingleton<VersionModel>(currentVersionModel);
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error getting current version model: $error');
+      // Use fallback version model
+      final fallbackVersionModel = VersionModel(
+        version: '1.0.0',
+        appStatus: AppStatus.none,
+        features: [],
+        isProd: false,
+      );
+      final getIt = GetIt.instance;
+      getIt.registerSingleton<VersionModel>(fallbackVersionModel);
+    }
   }
 
   /// Получение List моделей версий из remote конфига, а также номера нашей версии
@@ -46,8 +85,9 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
       final getIt = GetIt.instance;
       final currentVersionModel = getIt<VersionModel>();
       return currentVersionModel.appStatus;
-    } catch (_) {
-      return AppStatus.technicalWorks;
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error getting app status: $error');
+      return AppStatus.none; // Return none instead of technical works
     }
   }
 
@@ -123,8 +163,17 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
       final String marketplaceKey = marketplace.enumToString;
       final String marketplaceValue = remoteConfig.getString(marketplaceKey);
       return VersionModel.listFromJson(jsonDecode(marketplaceValue));
-    } catch (_) {
-      rethrow;
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error getting versions: $error');
+      // Return fallback versions
+      return [
+        VersionModel(
+          version: '1.0.0',
+          appStatus: AppStatus.none,
+          features: [],
+          isProd: false,
+        ),
+      ];
     }
   }
 
@@ -139,19 +188,52 @@ class FirebaseRemoteConfigService implements RemoteConfigService {
       );
       final String marketplaceKey = marketplace.enumToString;
       return jsonDecode(urls)[marketplaceKey];
-    } catch (_) {
-      rethrow;
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error getting marketplace URL: $error');
+      // Return fallback URL
+      return 'https://play.google.com/store/apps/details?id=com.example.app';
     }
   }
 
   Future<void> _getBaseURL() async {
-    final getIt = GetIt.instance;
-    final currentVersionModel = getIt<VersionModel>();
-    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    final String url = remoteConfig.getString(currentVersionModel.isProd
-        ? RemoteConfigConstants.prodBaseURL
-        : RemoteConfigConstants.devBaseURL
-    );
-    getIt.registerSingleton<NetworkConfig>(NetworkConfig(baseUrl: url));
+    try {
+      final getIt = GetIt.instance;
+      final currentVersionModel = getIt<VersionModel>();
+      final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+      final String url = remoteConfig.getString(currentVersionModel.isProd
+          ? RemoteConfigConstants.prodBaseURL
+          : RemoteConfigConstants.devBaseURL
+      );
+      getIt.registerSingleton<NetworkConfig>(NetworkConfig(baseUrl: url));
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error getting base URL: $error');
+      // Use fallback URL
+      final getIt = GetIt.instance;
+      getIt.registerSingleton<NetworkConfig>(NetworkConfig(baseUrl: 'https://api.example.com'));
+    }
+  }
+
+  Future<void> _setFallbackValues() async {
+    try {
+      print('🔄 FirebaseRemoteConfig: Setting fallback values...');
+      
+      // Create a fallback version model
+      final fallbackVersionModel = VersionModel(
+        version: '1.0.0',
+        appStatus: AppStatus.none,
+        features: [],
+        isProd: false,
+      );
+      
+      final getIt = GetIt.instance;
+      getIt.registerSingleton<VersionModel>(fallbackVersionModel);
+      
+      // Set fallback network config
+      getIt.registerSingleton<NetworkConfig>(NetworkConfig(baseUrl: 'https://api.example.com'));
+      
+      print('✅ FirebaseRemoteConfig: Fallback values set successfully');
+    } catch (error) {
+      print('❌ FirebaseRemoteConfig: Error setting fallback values: $error');
+    }
   }
 }

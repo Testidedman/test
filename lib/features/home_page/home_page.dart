@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           routes: [
             MainRoute(),
             MainRoute(),
-            MainRoute(),
+            FavouritesRoute(),
             SettingsRoute()
           ],
           extendBody: true,

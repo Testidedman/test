@@ -41,10 +41,23 @@ class BookPageBody extends StatelessWidget {
                   size: 30,
                 ),
               ),
-              Icon(
-                Icons.bookmark_border,
-                color: Colors.white,
-                size: 30,
+              BlocBuilder<BookPageBloc, BookPageState>(
+                builder: (context, state) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (state.bookModel != null) {
+                        context.read<BookPageBloc>().add(
+                          BookPageEventToggleFavourite(bookId: state.bookModel!.id),
+                        );
+                      }
+                    },
+                    child: Icon(
+                      state.isInFavourites ? Icons.bookmark : Icons.bookmark_border,
+                      color: state.isInFavourites ? Colors.red : Colors.white,
+                      size: 30,
+                    ),
+                  );
+                },
               ),
             ],
           ),
